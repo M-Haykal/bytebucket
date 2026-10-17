@@ -1,0 +1,18 @@
+import express from "express";
+import cors from "cors";
+import uploadRouter from "./routes/upload.routes.js";
+import authRouter from "./routes/auth.routes.js";
+import keyRouter from "./routes/key.routes.js";
+import imageRouter from "./routes/image.routes.js";
+import cdnRouter from "./routes/cdn.routes.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
+export const app = express();
+app.use(cors());
+app.use(express.json());
+app.get("/health", (_req, res) => res.json({ ok: true }));
+app.use("/api/auth", authRouter);
+app.use("/api/keys", keyRouter);
+app.use("/api/images", imageRouter);
+app.use("/cdn", cdnRouter);
+app.use("/api/v1/upload", uploadRouter);
+app.use(errorHandler);

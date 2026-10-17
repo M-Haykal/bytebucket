@@ -1,0 +1,57 @@
+<section class="guide glass">
+  <div class="guide-intro">
+    <span class="eyebrow">
+      QUICK INTEGRATION
+    </span>
+    <h2>Use your API key in minutes.</h2>
+    <p class="muted">
+      Your key authenticates uploads. Keep it private on your server and never expose it in public browser code.
+    </p>
+    <div class="steps"><div>
+      <b>01</b>
+      <span>Generate a key above</span>
+    </div>
+    <div>
+      <b>02</b>
+      <span>Send it as 
+        <code>X-API-Key</code>
+      </span>
+    </div>
+    <div>
+      <b>03</b>
+      <span>Upload files using 
+        <code>images</code>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="snippet">
+  <div class="snippet-head">
+    <span>cURL</span>
+    <button class="copy-snippet" data-copy="curl -X POST https://bytebucket.hayproject.my.id/api/v1/upload -H &quot;X-API-Key: sk_live_your_key&quot; -F &quot;images=@photo.png&quot;">
+      Copy
+    </button>
+  </div>
+  <pre>
+    curl -X POST https://bytebucket.hayproject.my.id/api/v1/upload \-H "X-API-Key: sk_live_your_key" \-F "images=@photo.png"
+  </pre>
+    <div class="snippet-head second">
+      <span>JavaScript / Node.js</span>
+      <button class="copy-snippet" data-copy="const form = new FormData(); form.append('images', file); await fetch('https://bytebucket.hayproject.my.id/api/v1/upload', { method: 'POST', headers: { 'X-API-Key': API_KEY }, body: form });">
+        Copy
+      </button>
+    </div>
+    <pre>
+      const form = new FormData();
+        form.append('images', file);
+
+        await fetch('/api/v1/upload', {
+          method: 'POST',
+          headers: { 'X-API-Key': API_KEY },
+          body: form
+        });
+      </pre>
+    </div>
+  </section>
+<script>document.querySelectorAll('.copy-snippet').forEach(b=>b.addEventListener('click',async()=>{await navigator.clipboard?.writeText(b.dataset.copy);b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1000)}));</script>
+<style>.guide{display:grid;grid-template-columns:1fr 1.05fr;gap:28px;margin-top:14px;padding:30px;border-radius:24px}.guide h2{font-size:28px;letter-spacing:-.05em;margin:10px 0}.guide-intro>p{font-size:13px;line-height:1.6;max-width:390px}.steps{display:grid;gap:14px;margin-top:28px}.steps div{display:flex;align-items:center;gap:12px;font-size:13px}.steps b{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#202538;color:#b8c0ff;font-size:10px}.steps code{color:#b9c1ff;background:#202538;padding:2px 5px;border-radius:4px;font-size:11px}.snippet{border:1px solid #ffffff12;background:#0a0d14;border-radius:16px;overflow:hidden}.snippet-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;color:#8e98ff;font-size:11px;border-bottom:1px solid #ffffff0c}.snippet-head.second{border-top:1px solid #ffffff0c}.copy-snippet{border:1px solid #333b55;background:#1b2030;border-radius:6px;padding:5px 8px;color:#c0c8ff;font-size:10px}.snippet pre{padding:0 16px 15px;margin:14px 0 0;white-space:pre-wrap;color:#bbc2d1;font:11px/1.7 ui-monospace,monospace}@media(max-width:800px){.guide{grid-template-columns:1fr;padding:22px}}</style>

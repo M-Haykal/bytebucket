@@ -1,0 +1,3 @@
+import {Router} from 'express';import {prisma} from '../config/prisma.js';import {env} from '../config/env.js';import {requireAuth,AuthRequest} from '../middlewares/auth.middleware.js';
+const router=Router();router.use(requireAuth);
+router.get('/',async(req,res,next)=>{try{const rows=await prisma.imageMetadata.findMany({where:{userId:(req as AuthRequest).userId},orderBy:{createdAt:'desc'},take:100});res.json({success:true,data:rows.map(x=>({id:x.id,original_name:x.originalName,filename:x.filename,mime_type:x.mimeType,size_bytes:Number(x.sizeBytes),created_at:x.createdAt,cdn_url:env.CDN_BASE_URL+'/cdn/'+encodeURIComponent(x.filename)}))})}catch(e){next(e)}});export default router;

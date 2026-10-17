@@ -1,0 +1,1203 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Button from "../components/Button.astro";
+import BentoCard from "../components/BentoCard.astro";
+import {
+  Globe,
+  Sliders,
+  ShieldCheck,
+  Code2,
+  Zap,
+  Sparkles,
+  ArrowRight,
+  Copy,
+  Check,
+  Terminal,
+  Layers,
+  CheckCircle2,
+  ExternalLink,
+} from "lucide-astro";
+---
+
+<Layout title="ByteBucket — Lightning-fast Image CDN & Storage">
+  <Navbar />
+
+  <main class="shell">
+    <!-- Hero Section (Apple Aesthetic) -->
+    <section class="hero-section">
+      <div class="pill-badge-wrap">
+        <div class="badge-pill">
+          <Sparkles size={13} class="pill-sparkle" />
+          <span>ByteBucket CDN 2.0 · Ultra-low latency edge storage</span>
+        </div>
+      </div>
+
+      <h1 class="hero-headline">
+        Lightning-fast CDN.<br />
+        <span class="gradient-text">Simple as S3.</span>
+      </h1>
+
+      <p class="hero-subhead">
+        Store, transform, and deliver every image with unmatched edge performance.
+        Resize, recompress, and cache dynamically with one elegant URL API.
+      </p>
+
+      <div class="hero-actions">
+        <Button href="/dashboard" size="lg" variant="primary">
+          <span>Get Started Free</span>
+          <ArrowRight size={15} stroke-width={2} />
+        </Button>
+        <Button href="/docs" size="lg" variant="secondary">
+          <span>View Documentation</span>
+          <ExternalLink size={14} stroke-width={1.8} />
+        </Button>
+      </div>
+
+      <!-- Quick Trust Indicators -->
+      <div class="hero-stats-strip">
+        <div class="strip-item">
+          <strong>100+</strong>
+          <span>Global PoPs</span>
+        </div>
+        <div class="strip-divider"></div>
+        <div class="strip-item">
+          <strong>&lt; 20ms</strong>
+          <span>Global Edge Latency</span>
+        </div>
+        <div class="strip-divider"></div>
+        <div class="strip-item">
+          <strong>80%</strong>
+          <span>Bandwidth Saved</span>
+        </div>
+        <div class="strip-divider"></div>
+        <div class="strip-item">
+          <strong>99.99%</strong>
+          <span>Availability SLA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- macOS Interactive Showcase Section -->
+    <section id="demo" class="demo-section">
+      <div class="demo-window glass">
+        <!-- macOS Window Titlebar -->
+        <div class="window-titlebar">
+          <div class="traffic-lights">
+            <span class="dot close"></span>
+            <span class="dot minimize"></span>
+            <span class="dot maximize"></span>
+          </div>
+          <div class="window-title">
+            <span>bytebucket-edge-playground — v2.4</span>
+          </div>
+          <div class="window-actions">
+            <span class="latency-tag">● 24ms Edge Cache</span>
+          </div>
+        </div>
+
+        <!-- Window Body: Code on left, Interactive live transformer on right -->
+        <div class="window-content-grid">
+          <!-- Left: Code Snippet Showcase -->
+          <div class="demo-code-pane">
+            <div class="pane-header">
+              <span class="pane-title">HTTP CLIENT CODE</span>
+              <div class="pane-tabs">
+                <button class="demo-tab active" data-demo-tab="fetch">fetch()</button>
+                <button class="demo-tab" data-demo-tab="curl">cURL</button>
+                <button class="demo-tab" data-demo-tab="img">&lt;img&gt;</button>
+              </div>
+            </div>
+
+            <div class="code-editor-area">
+              <!-- Fetch Tab -->
+              <div id="demo-code-fetch" class="demo-code-block active">
+                <pre><code><span class="c-keyword">const</span> cdnUrl = <span class="c-string" id="dynamic-code-url">'https://bytebucket.hayproject.my.id/cdn/landscape.webp?w=800&format=webp&q=85'</span>;
+
+<span class="c-keyword">const</span> response = <span class="c-keyword">await</span> <span class="c-func">fetch</span>(cdnUrl, &#123;
+  headers: &#123;
+    <span class="c-prop">'Accept'</span>: <span class="c-string">'image/avif,image/webp,*/*'</span>
+  &#125;
+&#125;);
+
+<span class="c-comment">// Returns 800px WebP compressed on-the-fly</span>
+<span class="c-keyword">const</span> imageBlob = <span class="c-keyword">await</span> response.<span class="c-func">blob</span>();</code></pre>
+              </div>
+
+              <!-- cURL Tab -->
+              <div id="demo-code-curl" class="demo-code-block">
+                <pre><code><span class="c-comment"># Fetch dynamically compressed asset from nearest PoP</span>
+curl -I <span class="c-string" id="curl-code-url">"https://bytebucket.hayproject.my.id/cdn/landscape.webp?w=800&format=webp&q=85"</span>
+
+<span class="c-keyword">HTTP/2 200 OK</span>
+<span class="c-prop">content-type:</span> image/webp
+<span class="c-prop">x-cache:</span> HIT (Edge Singapore)
+<span class="c-prop">cache-control:</span> public, max-age=31536000, immutable</code></pre>
+              </div>
+
+              <!-- HTML Tab -->
+              <div id="demo-code-img" class="demo-code-block">
+                <pre><code><span class="c-comment">&lt;!-- Drop-in dynamic resizing for responsive web --&gt;</span>
+&lt;<span class="c-keyword">img</span> 
+  <span class="c-prop">src</span>=<span class="c-string" id="html-code-url">"https://bytebucket.hayproject.my.id/cdn/landscape.webp?w=800&format=webp&q=85"</span>
+  <span class="c-prop">alt</span>=<span class="c-string">"Landscape Hero"</span>
+  <span class="c-prop">loading</span>=<span class="c-string">"lazy"</span>
+  <span class="c-prop">width</span>=<span class="c-string">"800"</span> /&gt;</code></pre>
+              </div>
+            </div>
+
+            <!-- Copy Demo URL bar -->
+            <div class="demo-copy-bar">
+              <span class="url-label">LIVE CDN URL</span>
+              <code id="display-cdn-url" class="cdn-url-snippet">https://bytebucket.hayproject.my.id/cdn/landscape.webp?w=800&format=webp&q=85</code>
+              <button id="btn-copy-demo-url" class="btn-copy-pill" title="Copy URL">
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span class="copy-text">Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Live Image Simulator -->
+          <div class="demo-preview-pane">
+            <div class="preview-header">
+              <span class="pane-title">LIVE EDGE TRANSFORMATION</span>
+              <span class="badge-live-sharp">Sharp 0.33 Engine</span>
+            </div>
+
+            <!-- Dynamic Image Display -->
+            <div class="preview-canvas-box">
+              <div class="preview-canvas">
+                <img
+                  id="preview-img"
+                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=85"
+                  alt="Dynamic transformation showcase"
+                  class="interactive-image"
+                />
+                <div class="image-overlay-info">
+                  <span id="canvas-dim-badge">800 × 533 px</span>
+                  <span id="canvas-format-badge">WebP · 85% Quality</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Real-time Controls / Sliders -->
+            <div class="transformer-controls">
+              <!-- Width Selector -->
+              <div class="control-row">
+                <span class="ctrl-label">Target Width:</span>
+                <div class="pill-selector" id="width-selector">
+                  <button class="selector-btn" data-width="400">400px</button>
+                  <button class="selector-btn active" data-width="800">800px</button>
+                  <button class="selector-btn" data-width="1200">1200px</button>
+                </div>
+              </div>
+
+              <!-- Format Selector -->
+              <div class="control-row">
+                <span class="ctrl-label">Format:</span>
+                <div class="pill-selector" id="format-selector">
+                  <button class="selector-btn active" data-format="webp">WebP</button>
+                  <button class="selector-btn" data-format="avif">AVIF</button>
+                  <button class="selector-btn" data-format="jpeg">JPEG</button>
+                </div>
+              </div>
+
+              <!-- Quality Selector -->
+              <div class="control-row">
+                <span class="ctrl-label">Quality:</span>
+                <div class="pill-selector" id="quality-selector">
+                  <button class="selector-btn" data-quality="70">70%</button>
+                  <button class="selector-btn active" data-quality="85">85%</button>
+                  <button class="selector-btn" data-quality="100">100%</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section (Bento Grid) -->
+    <section id="features" class="features-section">
+      <div class="features-header">
+        <span class="eyebrow">BUILT FOR BUILDERS</span>
+        <h2>
+          Everything you need.<br />
+          <span class="gradient-text">Nothing you don't.</span>
+        </h2>
+        <p class="features-subhead">
+          Designed with Apple-level attention to detail. Fast, dependable image storage without unnecessary cloud complexity.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Bento 1: Global CDN (Large) -->
+        <BentoCard
+          title="Instant Global CDN Delivery"
+          description="Assets are replicated across 100+ worldwide edge PoPs. Requests are automatically routed to the closest server for sub-30ms time-to-first-byte."
+          badge="Global Network"
+          size="large"
+          metric="100+"
+          metricLabel="Edge PoPs Worldwide"
+        >
+          <Globe size={20} slot="icon" stroke-width={1.8} />
+          <div slot="visual" class="globe-visual">
+            <div class="pulse-ring-slow"></div>
+            <div class="network-node node-1"></div>
+            <div class="network-node node-2"></div>
+            <div class="network-node node-3"></div>
+          </div>
+        </BentoCard>
+
+        <!-- Bento 2: Dynamic Resizing -->
+        <BentoCard
+          title="On-the-fly Sharp Transformations"
+          description="Resize, re-encode, and compress images dynamically using URL query parameters. Powered by libvips for lightning-fast edge processing."
+          badge="URL Parameters"
+          size="medium"
+          metric="80%"
+          metricLabel="Average File Reduction"
+        >
+          <Sliders size={20} slot="icon" stroke-width={1.8} />
+        </BentoCard>
+
+        <!-- Bento 3: Secure API Keys -->
+        <BentoCard
+          title="Scoped API Key Security"
+          description="Generate cryptographically signed secret tokens. Masked key prefixes, instant revoke capability, and zero token exposure in browser code."
+          badge="AES-256 / SHA-256"
+          size="medium"
+          metric="Zero"
+          metricLabel="Token Leak Exposure"
+        >
+          <ShieldCheck size={20} slot="icon" stroke-width={1.8} />
+        </BentoCard>
+
+        <!-- Bento 4: Developer-First -->
+        <BentoCard
+          title="Developer-First Architecture"
+          description="A pure REST API compatible with standard FormData and cURL. Drop-in replacement for complex AWS S3 pipelines and Cloudinary."
+          badge="Zero Vendor Lock-in"
+          size="medium"
+          metric="3 min"
+          metricLabel="Integration Time"
+        >
+          <Code2 size={20} slot="icon" stroke-width={1.8} />
+        </BentoCard>
+
+        <!-- Bento 5: Format Negotiation -->
+        <BentoCard
+          title="Automated WebP & AVIF Delivery"
+          description="Automatically serve next-gen formats to compatible browsers. Fallback gracefully for older clients without writing extra logic."
+          badge="Smart Compression"
+          size="medium"
+          metric="AVIF / WebP"
+          metricLabel="Next-Gen Formats"
+        >
+          <Zap size={20} slot="icon" stroke-width={1.8} />
+        </BentoCard>
+
+        <!-- Bento 6: High Availability (Wide) -->
+        <BentoCard
+          title="Enterprise Reliability by Default"
+          description="Built on redundant object storage with immutable edge caching. Every file is protected with automatic checksums and health checks."
+          badge="High Availability"
+          size="wide"
+          metric="99.99%"
+          metricLabel="Uptime Availability Guarantee"
+        >
+          <Layers size={20} slot="icon" stroke-width={1.8} />
+        </BentoCard>
+      </div>
+    </section>
+
+    <!-- Bottom Apple CTA Banner -->
+    <section class="cta-banner glass">
+      <div class="cta-content">
+        <span class="eyebrow">GET STARTED TODAY</span>
+        <h2>Ready to accelerate your media?</h2>
+        <p>
+          Deploy your first image CDN bucket in under two minutes. No credit card required.
+        </p>
+        <div class="cta-btn-wrap">
+          <Button href="/dashboard" size="lg" variant="primary">
+            <span>Launch Developer Console</span>
+            <ArrowRight size={15} stroke-width={2} />
+          </Button>
+          <Button href="/docs" size="lg" variant="secondary">
+            <span>Read API Guide</span>
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apple-style Minimalist Footer -->
+    <footer class="apple-footer">
+      <div class="footer-grid">
+        <div class="footer-col brand-col">
+          <div class="footer-brand">
+            <span class="footer-mark">✦</span>
+            <strong>ByteBucket CDN</strong>
+          </div>
+          <p class="footer-brand-desc">
+            Ultra-fast image delivery, dynamic resizing, and developer-centric storage for modern digital products.
+          </p>
+          <div class="footer-status-tag">
+            <span class="status-dot"></span>
+            <span>All Global Edge Systems Operational</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="/#demo">Interactive Demo</a>
+          <a href="/#features">Features & Bento Grid</a>
+          <a href="/dashboard">Developer Console</a>
+          <a href="/docs">REST API Reference</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Developers</h4>
+          <a href="/docs#quickstart">Quickstart Guide</a>
+          <a href="/docs#javascript">Node.js / JS SDK</a>
+          <a href="/docs#curl">cURL Documentation</a>
+          <a href="/docs#transformations">Transformation Params</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Security & Legal</h4>
+          <a href="/dashboard#keys">API Key Security</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/status">Global Network Status</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <span>Copyright © 2026 ByteBucket, Inc. All rights reserved.</span>
+          <span class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <span>•</span>
+            <a href="#">Terms of Use</a>
+            <span>•</span>
+            <a href="#">Sales and Refunds</a>
+            <span>•</span>
+            <a href="#">Legal</a>
+          </span>
+        </div>
+        <div class="footer-locale">
+          <span>Global (English)</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    text-align: center;
+    padding: 110px 0 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pill-badge-wrap {
+    margin-bottom: 24px;
+  }
+
+  .pill-sparkle {
+    color: var(--apple-blue);
+  }
+
+  .hero-headline {
+    font-size: clamp(48px, 8vw, 92px);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+    font-weight: 800;
+    margin-bottom: 24px;
+    max-width: 950px;
+  }
+
+  .hero-subhead {
+    max-width: 580px;
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.55;
+    color: #86868b;
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stats-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 16px 32px;
+    border-radius: 9999px;
+    background: rgba(14, 14, 18, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+  }
+
+  .strip-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .strip-item strong {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+  }
+
+  .strip-item span {
+    font-size: 11px;
+    color: #86868b;
+  }
+
+  .strip-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* macOS Showcase Window */
+  .demo-section {
+    padding: 30px 0 90px;
+  }
+
+  .demo-window {
+    border-radius: 24px;
+    overflow: hidden;
+    background: rgba(10, 10, 14, 0.75);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .window-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .traffic-lights {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .traffic-lights .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .dot.close { background: #ff5f56; }
+  .dot.minimize { background: #ffbd2e; }
+  .dot.maximize { background: #27c93f; }
+
+  .window-title {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: #86868b;
+  }
+
+  .latency-tag {
+    font-size: 11px;
+    color: #30d158;
+    background: rgba(48, 209, 88, 0.12);
+    border: 1px solid rgba(48, 209, 88, 0.25);
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+
+  .window-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Left Pane */
+  .demo-code-pane {
+    padding: 24px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .pane-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .pane-title {
+    font-size: 10.5px;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+    color: #86868b;
+  }
+
+  .pane-tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px;
+    border-radius: 8px;
+  }
+
+  .demo-tab {
+    background: transparent;
+    border: none;
+    color: #86868b;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .demo-tab.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+
+  .code-editor-area {
+    min-height: 220px;
+  }
+
+  .demo-code-block {
+    display: none;
+  }
+
+  .demo-code-block.active {
+    display: block;
+  }
+
+  .demo-code-block pre {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #d1d5db;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  .c-keyword { color: #f472b6; }
+  .c-string { color: #93c5fd; }
+  .c-func { color: #60a5fa; }
+  .c-prop { color: #a78bfa; }
+  .c-comment { color: #6b7280; }
+
+  .demo-copy-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #060608;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .url-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--apple-blue);
+    flex-shrink: 0;
+  }
+
+  .cdn-url-snippet {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: #e5e5ea;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+
+  .btn-copy-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+
+  .btn-copy-pill:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  /* Right Pane: Live Image Preview */
+  .demo-preview-pane {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .badge-live-sharp {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #a78bfa;
+    background: rgba(167, 139, 250, 0.12);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  .preview-canvas-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 14px;
+    background: #060608;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    min-height: 230px;
+  }
+
+  .preview-canvas {
+    position: relative;
+    max-width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .interactive-image {
+    display: block;
+    max-height: 200px;
+    width: auto;
+    object-fit: cover;
+    transition: all 0.3s ease;
+  }
+
+  .image-overlay-info {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 10.5px;
+    color: #ffffff;
+  }
+
+  .transformer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .control-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .ctrl-label {
+    font-size: 12.5px;
+    color: #86868b;
+    font-weight: 500;
+  }
+
+  .pill-selector {
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px;
+    border-radius: 8px;
+  }
+
+  .selector-btn {
+    background: transparent;
+    border: none;
+    color: #a1a1a6;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .selector-btn:hover {
+    color: #ffffff;
+  }
+
+  .selector-btn.active {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 600;
+  }
+
+  /* Features Section */
+  .features-section {
+    padding: 70px 0 90px;
+  }
+
+  .features-header {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 50px;
+  }
+
+  .features-header h2 {
+    font-size: clamp(36px, 5.5vw, 60px);
+    letter-spacing: -0.05em;
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .features-subhead {
+    font-size: 17px;
+    color: #86868b;
+    line-height: 1.6;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  /* Specular / Globe visual in Bento 1 */
+  .globe-visual {
+    position: relative;
+    height: 100px;
+    display: grid;
+    place-items: center;
+  }
+
+  .pulse-ring-slow {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid rgba(41, 151, 255, 0.3);
+    animation: ringPulse 3s infinite ease-out;
+  }
+
+  @keyframes ringPulse {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  .network-node {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #60a5fa;
+    box-shadow: 0 0 12px #60a5fa;
+  }
+
+  .node-1 { top: 20%; left: 35%; }
+  .node-2 { top: 60%; right: 40%; }
+  .node-3 { bottom: 25%; left: 45%; }
+
+  /* Bottom CTA Banner */
+  .cta-banner {
+    margin: 40px 0 90px;
+    padding: 70px 40px;
+    border-radius: 32px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 0%, rgba(41, 151, 255, 0.12) 0%, transparent 60%), rgba(14, 14, 18, 0.65);
+  }
+
+  .cta-content {
+    max-width: 580px;
+    margin: auto;
+  }
+
+  .cta-content h2 {
+    font-size: clamp(34px, 4.5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    margin-bottom: 14px;
+  }
+
+  .cta-content p {
+    font-size: 16px;
+    color: #86868b;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  .cta-btn-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  /* Apple Footer */
+  .apple-footer {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+
+  .brand-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #ffffff;
+  }
+
+  .footer-mark {
+    color: var(--apple-blue);
+    font-size: 14px;
+  }
+
+  .footer-brand-desc {
+    font-size: 12.5px;
+    color: #86868b;
+    line-height: 1.6;
+    max-width: 300px;
+  }
+
+  .footer-status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #30d158;
+    margin-top: 8px;
+  }
+
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 12.5px;
+    color: #86868b;
+    margin-bottom: 10px;
+  }
+
+  .footer-col a:hover {
+    color: #ffffff;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 11.5px;
+    color: #6e6e73;
+  }
+
+  .footer-legal {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .legal-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .legal-links a:hover {
+    color: #a1a1a6;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 950px) {
+    .window-content-grid {
+      grid-template-columns: 1fr;
+    }
+    .demo-code-pane {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .bento-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .hero-section {
+      padding: 50px 0 30px;
+    }
+    .hero-headline {
+      font-size: clamp(34px, 8.5vw, 46px);
+      margin-bottom: 18px;
+    }
+    .hero-subhead {
+      font-size: 14.5px;
+      margin-bottom: 28px;
+    }
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 40px;
+    }
+    .hero-actions :global(.apple-btn) {
+      width: 100%;
+      justify-content: center;
+    }
+    .hero-stats-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-radius: 20px;
+      gap: 16px;
+      padding: 16px 20px;
+      width: 100%;
+      max-width: 340px;
+    }
+    .strip-divider {
+      display: none;
+    }
+    .window-title {
+      display: none;
+    }
+    .latency-tag {
+      font-size: 10px;
+      padding: 2px 7px;
+    }
+    .demo-code-pane,
+    .demo-preview-pane {
+      padding: 18px 14px;
+    }
+    .demo-code-block pre {
+      font-size: 11.5px;
+    }
+    .control-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .pill-selector {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    .selector-btn {
+      flex: 1;
+      text-align: center;
+      padding: 5px 6px;
+      font-size: 11px;
+    }
+    .demo-copy-bar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .btn-copy-pill {
+      justify-content: center;
+      width: 100%;
+    }
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+    .cta-banner {
+      padding: 40px 18px;
+      border-radius: 24px;
+      margin: 30px 0 60px;
+    }
+    .cta-btn-wrap {
+      flex-direction: column;
+      width: 100%;
+    }
+    .cta-btn-wrap :global(.apple-btn) {
+      width: 100%;
+      justify-content: center;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<script>
+  // Tab switcher for macOS Demo window
+  const demoTabs = document.querySelectorAll(".demo-tab");
+  demoTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const tabKey = (tab as HTMLElement).dataset.demoTab;
+      demoTabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      document.querySelectorAll(".demo-code-block").forEach((b) => b.classList.remove("active"));
+      const targetBlock = document.getElementById(`demo-code-${tabKey}`);
+      if (targetBlock) targetBlock.classList.add("active");
+    });
+  });
+
+  // Dynamic image resizer playground
+  let curWidth = "800";
+  let curFormat = "webp";
+  let curQuality = "85";
+
+  const displayCdnUrl = document.getElementById("display-cdn-url");
+  const dynamicCodeUrl = document.getElementById("dynamic-code-url");
+  const curlCodeUrl = document.getElementById("curl-code-url");
+  const htmlCodeUrl = document.getElementById("html-code-url");
+  const previewImg = document.getElementById("preview-img") as HTMLImageElement | null;
+  const canvasDimBadge = document.getElementById("canvas-dim-badge");
+  const canvasFormatBadge = document.getElementById("canvas-format-badge");
+  const copyDemoUrlBtn = document.getElementById("btn-copy-demo-url");
+
+  function updatePlayground() {
+    const fullUrl = `https://bytebucket.hayproject.my.id/cdn/landscape.webp?w=${curWidth}&format=${curFormat}&q=${curQuality}`;
+
+    if (displayCdnUrl) displayCdnUrl.textContent = fullUrl;
+    if (dynamicCodeUrl) dynamicCodeUrl.textContent = `'${fullUrl}'`;
+    if (curlCodeUrl) curlCodeUrl.textContent = `"${fullUrl}"`;
+    if (htmlCodeUrl) htmlCodeUrl.textContent = `"${fullUrl}"`;
+
+    if (previewImg) {
+      previewImg.src = `https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=${curWidth}&q=${curQuality}`;
+      previewImg.style.width = curWidth === "400" ? "260px" : curWidth === "800" ? "340px" : "100%";
+    }
+
+    if (canvasDimBadge) {
+      const h = Math.round((parseInt(curWidth) * 533) / 800);
+      canvasDimBadge.textContent = `${curWidth} × ${h} px`;
+    }
+
+    if (canvasFormatBadge) {
+      canvasFormatBadge.textContent = `${curFormat.toUpperCase()} · ${curQuality}% Quality`;
+    }
+  }
+
+  // Width selector buttons
+  document.querySelectorAll("#width-selector .selector-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#width-selector .selector-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      curWidth = (btn as HTMLElement).dataset.width || "800";
+      updatePlayground();
+    });
+  });
+
+  // Format selector buttons
+  document.querySelectorAll("#format-selector .selector-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#format-selector .selector-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      curFormat = (btn as HTMLElement).dataset.format || "webp";
+      updatePlayground();
+    });
+  });
+
+  // Quality selector buttons
+  document.querySelectorAll("#quality-selector .selector-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#quality-selector .selector-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      curQuality = (btn as HTMLElement).dataset.quality || "85";
+      updatePlayground();
+    });
+  });
+
+  // Copy demo CDN URL
+  copyDemoUrlBtn?.addEventListener("click", async () => {
+    const text = displayCdnUrl?.textContent || "";
+    try {
+      await navigator.clipboard.writeText(text);
+      const copyIcon = copyDemoUrlBtn.querySelector(".copy-icon");
+      const checkIcon = copyDemoUrlBtn.querySelector(".check-icon");
+      const copyText = copyDemoUrlBtn.querySelector(".copy-text");
+
+      copyIcon?.classList.add("hidden");
+      checkIcon?.classList.remove("hidden");
+      if (copyText) copyText.textContent = "Copied!";
+
+      if (window.showToast) {
+        window.showToast("Playground CDN URL copied to clipboard");
+      }
+
+      setTimeout(() => {
+        copyIcon?.classList.remove("hidden");
+        checkIcon?.classList.add("hidden");
+        if (copyText) copyText.textContent = "Copy";
+      }, 1800);
+    } catch {
+      prompt("Copy URL:", text);
+    }
+  });
+</script>

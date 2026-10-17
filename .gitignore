@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Build output and framework caches
+dist/
+build/
+.astro/
+.cache/
+coverage/
+*.tsbuildinfo
+
+# Local storage and generated media
+uploads/
+**/uploads/
+*.webp
+*.jpg
+*.jpeg
+*.png
+
+# Logs and local tooling
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# Prisma local artifacts
+prisma/*.db
+prisma/*.db-journal
+

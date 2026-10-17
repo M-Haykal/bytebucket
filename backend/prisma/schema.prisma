@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ApiKeyStatus { 
+  active
+  revoked
+}
+
+model User { 
+  id String @id @default(cuid()) 
+  email String @unique 
+  passwordHash String @map("password_hash") 
+  name String 
+  createdAt DateTime @default(now()) @map("created_at") 
+  apiKeys ApiKey[] 
+  images ImageMetadata[] 
+  @@map("users") 
+  
+}
+
+model ApiKey { 
+  id String @id @default(cuid()) 
+  userId String @map("user_id") 
+  name String 
+  keyHash String @map("key_hash") 
+  keyPrefix String @map("key_prefix") 
+  status ApiKeyStatus @default(active)
+  createdAt DateTime @default(now()) @map("created_at") 
+  lastUsedAt DateTime? @map("last_used_at") 
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade) 
+  images ImageMetadata[] 
+  @@index([userId]) 
+  @@map("api_keys") 
+}
+model ImageMetadata { 
+  id String @id @default(cuid()) 
+  userId String @map("user_id") 
+  apiKeyId String @map("api_key_id") 
+  originalName String @map("original_name") 
+  filename String 
+  mimeType String @map("mime_type") 
+  sizeBytes BigInt @map("size_bytes") 
+  createdAt DateTime @default(now()) @map("created_at") 
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade) 
+  apiKey ApiKey @relation(fields:[apiKeyId],references:[id],onDelete:Restrict) 
+  @@index([filename]) 
+  @@map("image_metadata") 
+}

@@ -1,0 +1,364 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import ApiKeyTable from "../../components/ApiKeyTable.astro";
+import MediaStorage from "../../components/MediaStorage.astro";
+import CdnGuide from "../../components/CdnGuide.astro";
+import { HardDrive, Activity, Key, Zap, CheckCircle2, ShieldCheck, ArrowUpRight } from "lucide-astro";
+---
+
+<Layout title="Developer Console — ByteBucket Edge CDN">
+  <Navbar dashboard />
+
+  <main class="shell dashboard-shell">
+    <!-- Top Welcome Banner -->
+    <header class="dash-hero">
+      <div class="dash-title-wrap">
+        <div class="dash-eyebrow">
+          <span class="status-dot"></span>
+          <span>DEVELOPER INFRASTRUCTURE</span>
+        </div>
+        <h1>Console Overview</h1>
+        <p class="dash-subtitle">
+          Real-time metrics, secret credentials, and global edge delivery for your media.
+        </p>
+      </div>
+
+      <div class="network-badge-apple">
+        <div class="pulse-ring"></div>
+        <CheckCircle2 size={15} class="text-green" />
+        <div class="badge-text">
+          <strong>100+ PoPs Active</strong>
+          <span>99.99% Edge Availability</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Overview Metrics Grid -->
+    <section class="metrics-grid">
+      <!-- Metric 1: Storage -->
+      <div class="metric-card glass">
+        <div class="metric-head">
+          <span class="metric-title">STORAGE CONSUMPTION</span>
+          <div class="metric-icon">
+            <HardDrive size={16} stroke-width={1.8} />
+          </div>
+        </div>
+        <div class="metric-value-wrap">
+          <span class="metric-number">24.8</span>
+          <span class="metric-unit">GB</span>
+        </div>
+        <div class="storage-bar-bg">
+          <div class="storage-bar-fill" style="width: 24.8%;"></div>
+        </div>
+        <div class="metric-footer">
+          <span>24.8 GB of 100 GB tier</span>
+          <span class="trend-up">↑ 12.4%</span>
+        </div>
+      </div>
+
+      <!-- Metric 2: Requests -->
+      <div class="metric-card glass">
+        <div class="metric-head">
+          <span class="metric-title">EDGE CDN REQUESTS</span>
+          <div class="metric-icon">
+            <Activity size={16} stroke-width={1.8} />
+          </div>
+        </div>
+        <div class="metric-value-wrap">
+          <span class="metric-number">1.28</span>
+          <span class="metric-unit">M</span>
+        </div>
+        <div class="metric-subdetail">
+          <span class="cache-pill">99.98% Cache Hit</span>
+        </div>
+        <div class="metric-footer">
+          <span>Total this billing cycle</span>
+          <span class="trend-up">↑ 8.2%</span>
+        </div>
+      </div>
+
+      <!-- Metric 3: Active Keys -->
+      <div class="metric-card glass">
+        <div class="metric-head">
+          <span class="metric-title">ACTIVE API KEYS</span>
+          <div class="metric-icon">
+            <Key size={16} stroke-width={1.8} />
+          </div>
+        </div>
+        <div class="metric-value-wrap">
+          <span class="metric-number">3</span>
+          <span class="metric-unit">Keys</span>
+        </div>
+        <div class="metric-subdetail">
+          <span class="security-badge">
+            <ShieldCheck size={12} />
+            <span>Scoped & Secured</span>
+          </span>
+        </div>
+        <div class="metric-footer">
+          <span>All credentials operational</span>
+          <a href="#keys" class="link-jump">Manage ↗</a>
+        </div>
+      </div>
+
+      <!-- Metric 4: Edge Latency -->
+      <div class="metric-card glass">
+        <div class="metric-head">
+          <span class="metric-title">GLOBAL EDGE LATENCY</span>
+          <div class="metric-icon">
+            <Zap size={16} stroke-width={1.8} />
+          </div>
+        </div>
+        <div class="metric-value-wrap">
+          <span class="metric-number">18</span>
+          <span class="metric-unit">ms</span>
+        </div>
+        <div class="metric-subdetail">
+          <span class="region-pill">Singapore / Tokyo PoP</span>
+        </div>
+        <div class="metric-footer">
+          <span>Sharp image engine active</span>
+          <span class="status-live">● Realtime</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Section 1: API Key Management (With Copy & Revoke Fix) -->
+    <ApiKeyTable />
+
+    <!-- Main Section 2: CDN & API Usage Documentation (Requested in Prompt) -->
+    <CdnGuide />
+
+    <!-- Main Section 3: Media Storage & Asset Gallery -->
+    <MediaStorage />
+  </main>
+</Layout>
+
+<style>
+  .dashboard-shell {
+    padding-top: 48px;
+    padding-bottom: 90px;
+  }
+
+  /* Top Hero */
+  .dash-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+
+  .dash-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--apple-blue);
+    margin-bottom: 10px;
+  }
+
+  .dash-hero h1 {
+    font-size: clamp(34px, 4.5vw, 48px);
+    letter-spacing: -0.05em;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .dash-subtitle {
+    color: #86868b;
+    font-size: 15px;
+    max-width: 580px;
+    line-height: 1.5;
+  }
+
+  .network-badge-apple {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    background: rgba(14, 14, 18, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    flex-shrink: 0;
+  }
+
+  .text-green {
+    color: #30d158;
+  }
+
+  .badge-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .badge-text strong {
+    font-size: 12.5px;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .badge-text span {
+    font-size: 11px;
+    color: #86868b;
+  }
+
+  /* Metrics Grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .metric-card {
+    padding: 22px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 170px;
+  }
+
+  .metric-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .metric-title {
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+    color: #86868b;
+  }
+
+  .metric-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #a1a1a6;
+  }
+
+  .metric-value-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 12px 0 4px;
+  }
+
+  .metric-number {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  .metric-unit {
+    font-size: 15px;
+    font-weight: 500;
+    color: #86868b;
+  }
+
+  .storage-bar-bg {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    margin: 6px 0 8px;
+  }
+
+  .storage-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--apple-blue), #818cf8);
+    border-radius: 99px;
+  }
+
+  .metric-subdetail {
+    margin: 4px 0 8px;
+  }
+
+  .cache-pill, .region-pill {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: rgba(48, 209, 88, 0.1);
+    color: #30d158;
+    border: 1px solid rgba(48, 209, 88, 0.2);
+    font-weight: 500;
+  }
+
+  .region-pill {
+    background: rgba(41, 151, 255, 0.1);
+    color: #60a5fa;
+    border-color: rgba(41, 151, 255, 0.2);
+  }
+
+  .security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #a1a1a6;
+  }
+
+  .metric-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    color: #707078;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 10px;
+    margin-top: auto;
+  }
+
+  .trend-up {
+    color: #30d158;
+    font-weight: 600;
+  }
+
+  .link-jump {
+    color: var(--apple-blue);
+    font-weight: 500;
+  }
+
+  .status-live {
+    color: #30d158;
+    font-size: 10.5px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 1050px) {
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .dash-hero {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+    .dashboard-shell {
+      padding-top: 30px;
+    }
+  }
+</style>

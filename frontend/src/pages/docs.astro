@@ -1,0 +1,1030 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import {
+  BookOpen,
+  Terminal,
+  Code2,
+  Copy,
+  Check,
+  Shield,
+  Layers,
+  ArrowRight,
+  ExternalLink,
+  ChevronRight,
+  Sparkles,
+  Sliders,
+  Globe,
+  Cpu,
+  AlertTriangle,
+  Info,
+} from "lucide-astro";
+---
+
+<Layout title="Developer Documentation — ByteBucket Edge CDN">
+  <Navbar />
+
+  <main class="shell docs-page">
+    <!-- Docs Header -->
+    <header class="docs-hero">
+      <div class="docs-eyebrow">
+        <BookOpen size={14} class="eyebrow-icon" />
+        <span>DEVELOPER REFERENCE</span>
+      </div>
+      <h1>REST API & Edge Delivery</h1>
+      <p class="docs-subtitle">
+        Everything you need to programmatically upload, transform, and deliver images at lightning speed across our global CDN via <code>https://bytebucket.hayproject.my.id</code>.
+      </p>
+
+      <!-- Mobile Jump Chips (Visible on Mobile & Tablet) -->
+      <div class="mobile-jump-chips">
+        <a href="#overview" class="jump-chip">Overview</a>
+        <a href="#authentication" class="jump-chip">Auth</a>
+        <a href="#endpoints" class="jump-chip">Endpoints</a>
+        <a href="#upload-images" class="jump-chip">Upload API</a>
+        <a href="#parameters" class="jump-chip">Transformations</a>
+        <a href="#cache-headers" class="jump-chip">Caching</a>
+        <a href="#status-codes" class="jump-chip">Status Codes</a>
+        <a href="#code-js" class="jump-chip">Code Samples</a>
+      </div>
+    </header>
+
+    <!-- Docs Layout: Sidebar Navigation + Main Content -->
+    <div class="docs-layout">
+      <!-- Sticky Sidebar (Desktop) -->
+      <aside class="docs-sidebar">
+        <nav class="sidebar-nav">
+          <div class="nav-group">
+            <span class="group-title">GETTING STARTED</span>
+            <a href="#overview" class="doc-link active">Overview & Edge PoPs</a>
+            <a href="#authentication" class="doc-link">Authentication (X-API-Key)</a>
+            <a href="#endpoints" class="doc-link">Base URLs & Endpoints</a>
+          </div>
+
+          <div class="nav-group">
+            <span class="group-title">UPLOAD API</span>
+            <a href="#upload-images" class="doc-link">POST /api/v1/upload</a>
+            <a href="#upload-limits" class="doc-link">File Limits & Formats</a>
+            <a href="#list-images" class="doc-link">GET /api/images</a>
+          </div>
+
+          <div class="nav-group">
+            <span class="group-title">CDN DELIVERY</span>
+            <a href="#cdn-delivery" class="doc-link">GET /cdn/{'{filename}'}</a>
+            <a href="#parameters" class="doc-link">Transformation Parameters</a>
+            <a href="#cache-headers" class="doc-link">Cache Headers & Speed</a>
+            <a href="#status-codes" class="doc-link">HTTP Status Codes</a>
+          </div>
+
+          <div class="nav-group">
+            <span class="group-title">CODE INTEGRATION</span>
+            <a href="#code-js" class="doc-link">JavaScript / Node.js</a>
+            <a href="#code-browser" class="doc-link">Browser / Frontend</a>
+            <a href="#code-curl" class="doc-link">cURL Commands</a>
+            <a href="#code-python" class="doc-link">Python Requests</a>
+            <a href="#code-php" class="doc-link">PHP / Laravel</a>
+          </div>
+
+          <div class="nav-group">
+            <span class="group-title">DEVELOPER CONSOLE</span>
+            <a href="/dashboard" class="doc-link link-highlight">Launch Developer Console ↗</a>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Docs Content -->
+      <article class="docs-content">
+        <!-- 1. Overview -->
+        <section id="overview" class="doc-section">
+          <span class="section-tag">01 / ARCHITECTURE</span>
+          <h2>Overview & Edge Architecture</h2>
+          <p>
+            ByteBucket is a developer-first image CDN and storage platform. When an image is uploaded to <code>https://bytebucket.hayproject.my.id</code>, the Sharp processing engine converts the master copy to next-gen WebP with 85% lossless quality, strips metadata, and distributes the file across 100+ global edge locations.
+          </p>
+          <div class="callout-glass">
+            <div class="callout-icon">
+              <Sparkles size={16} />
+            </div>
+            <div>
+              <strong>Instant Global Delivery:</strong> Images are cached automatically on the edge closest to your end user. Subsequent requests have an average time-to-first-byte (TTFB) of &lt; 20ms.
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Authentication -->
+        <section id="authentication" class="doc-section">
+          <span class="section-tag">02 / SECURITY</span>
+          <h2>Authentication</h2>
+          <p>
+            All mutation requests (uploading media, deleting files, managing keys) require your secret API key passed via the <code>X-API-Key</code> request header. Public CDN delivery requests do not require authentication.
+          </p>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>Required Authentication Header</span>
+              <button class="btn-copy-code" data-copy="X-API-Key: sk_live_your_secret_key">
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code><span class="c-prop">X-API-Key:</span> <span class="c-string">sk_live_prod_99f248bb019dfa712e08cc4b</span></code></pre>
+          </div>
+
+          <div class="security-warning">
+            <Shield size={16} class="text-red" />
+            <div>
+              <strong>Security Best Practice:</strong> Keep secret keys on your server environment variables. Never commit secret keys to public git repositories or client-side JavaScript bundles.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Base URLs & Endpoints -->
+        <section id="endpoints" class="doc-section">
+          <span class="section-tag">03 / ENDPOINTS</span>
+          <h2>Base URLs & API Endpoints</h2>
+          <p>
+            The production API and CDN base URL is: <code>https://bytebucket.hayproject.my.id</code>
+          </p>
+
+          <div class="table-scroll-wrap">
+            <table class="apple-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Path</th>
+                  <th>Authentication</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="method post">POST</span></td>
+                  <td><code>/api/v1/upload</code></td>
+                  <td><code>X-API-Key</code></td>
+                  <td>Upload multipart images (up to 10 files, 25MB max)</td>
+                </tr>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td><code>/cdn/{'{filename}'}</code></td>
+                  <td>Public (None)</td>
+                  <td>Deliver optimized image with optional query parameters</td>
+                </tr>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td><code>/api/images</code></td>
+                  <td><code>Bearer &lt;JWT&gt;</code></td>
+                  <td>List stored asset metadata belonging to authenticated user</td>
+                </tr>
+                <tr>
+                  <td><span class="method post">POST</span></td>
+                  <td><code>/api/keys/generate</code></td>
+                  <td><code>Bearer &lt;JWT&gt;</code></td>
+                  <td>Generate a new secret API key</td>
+                </tr>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td><code>/api/keys</code></td>
+                  <td><code>Bearer &lt;JWT&gt;</code></td>
+                  <td>List all active and revoked API keys</td>
+                </tr>
+                <tr>
+                  <td><span class="method delete">DELETE</span></td>
+                  <td><code>/api/keys/{'{id}'}</code></td>
+                  <td><code>Bearer &lt;JWT&gt;</code></td>
+                  <td>Revoke an existing API key immediately</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 4. Upload Images API -->
+        <section id="upload-images" class="doc-section">
+          <span class="section-tag">04 / UPLOAD API</span>
+          <h2>Uploading Images (POST /api/v1/upload)</h2>
+          <p>
+            Upload files using a standard <code>multipart/form-data</code> POST request. Attach one or more files in the <code>images</code> form field.
+          </p>
+
+          <div id="upload-limits" class="callout-glass specs-box">
+            <div class="spec-item">
+              <strong>Form Field Name:</strong> <code>images</code>
+            </div>
+            <div class="spec-item">
+              <strong>Max Files Per Batch:</strong> 10 images
+            </div>
+            <div class="spec-item">
+              <strong>Max Size Per File:</strong> 25 MB
+            </div>
+            <div class="spec-item">
+              <strong>Supported Formats:</strong> JPEG, PNG, WebP, AVIF, GIF, SVG
+            </div>
+          </div>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>cURL Upload Command</span>
+              <button class="btn-copy-code" data-copy='curl -X POST https://bytebucket.hayproject.my.id/api/v1/upload -H "X-API-Key: sk_live_your_key" -F "images=@./product.png"'>
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code>curl -X POST https://bytebucket.hayproject.my.id/api/v1/upload \
+  -H <span class="c-string">"X-API-Key: sk_live_your_secret_key"</span> \
+  -F <span class="c-string">"images=@./product.png"</span></code></pre>
+          </div>
+
+          <p class="sub-text">Success JSON Response (HTTP 201 Created):</p>
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>JSON Response</span>
+            </div>
+            <pre><code>&#123;
+  <span class="c-prop">"success"</span>: <span class="c-keyword">true</span>,
+  <span class="c-prop">"message"</span>: <span class="c-string">"1 file uploaded successfully"</span>,
+  <span class="c-prop">"data"</span>: &#123;
+    <span class="c-prop">"id"</span>: <span class="c-string">"cm6y9a0x80001..."</span>,
+    <span class="c-prop">"original_name"</span>: <span class="c-string">"product.png"</span>,
+    <span class="c-prop">"cdn_url"</span>: <span class="c-string">"https://bytebucket.hayproject.my.id/cdn/1739...product.webp"</span>,
+    <span class="c-prop">"size_bytes"</span>: 248102
+  &#125;
+&#125;</code></pre>
+          </div>
+        </section>
+
+        <!-- 5. List Images API -->
+        <section id="list-images" class="doc-section">
+          <span class="section-tag">05 / MEDIA ASSETS</span>
+          <h2>Listing Images (GET /api/images)</h2>
+          <p>
+            Retrieve a JSON list of all images uploaded by your account, ordered chronologically. Requires session JWT authentication.
+          </p>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>cURL Request</span>
+              <button class="btn-copy-code" data-copy='curl https://bytebucket.hayproject.my.id/api/images -H "Authorization: Bearer <your_jwt_token>"'>
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code>curl https://bytebucket.hayproject.my.id/api/images \
+  -H <span class="c-string">"Authorization: Bearer &lt;your_jwt_token&gt;"</span></code></pre>
+          </div>
+        </section>
+
+        <!-- 6. Transformation Parameters -->
+        <section id="parameters" class="doc-section">
+          <span class="section-tag">06 / DYNAMIC CDN</span>
+          <h2>Transformation URL Parameters</h2>
+          <p>
+            Deliver responsive, compressed, and reformatted variations of any image simply by appending query parameters to the CDN delivery URL:
+          </p>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>Transformation URL Example</span>
+              <button class="btn-copy-code" data-copy="https://bytebucket.hayproject.my.id/cdn/product.webp?w=800&h=600&fit=cover&format=webp&q=85">
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code>https://bytebucket.hayproject.my.id/cdn/<span class="c-keyword">product.webp</span>?<span class="c-prop">w</span>=800&<span class="c-prop">h</span>=600&<span class="c-prop">fit</span>=cover&<span class="c-prop">format</span>=webp&<span class="c-prop">q</span>=85</code></pre>
+          </div>
+
+          <div class="table-scroll-wrap">
+            <table class="apple-table">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Type</th>
+                  <th>Options / Range</th>
+                  <th>Default</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>w</code></td>
+                  <td>Integer</td>
+                  <td>1 - 4000</td>
+                  <td>Original</td>
+                  <td>Target width in pixels. Preserves aspect ratio when <code>h</code> is omitted.</td>
+                </tr>
+                <tr>
+                  <td><code>h</code></td>
+                  <td>Integer</td>
+                  <td>1 - 4000</td>
+                  <td>Original</td>
+                  <td>Target height in pixels. Preserves aspect ratio when <code>w</code> is omitted.</td>
+                </tr>
+                <tr>
+                  <td><code>format</code></td>
+                  <td>String</td>
+                  <td><code>webp</code>, <code>avif</code>, <code>png</code>, <code>jpeg</code></td>
+                  <td><code>webp</code></td>
+                  <td>Output encoding format. WebP/AVIF yields up to 80% smaller payloads.</td>
+                </tr>
+                <tr>
+                  <td><code>q</code></td>
+                  <td>Integer</td>
+                  <td>1 - 100</td>
+                  <td>85</td>
+                  <td>Compression quality. 85 gives optimal fidelity-to-file-size ratio.</td>
+                </tr>
+                <tr>
+                  <td><code>fit</code></td>
+                  <td>String</td>
+                  <td><code>cover</code>, <code>contain</code>, <code>fill</code>, <code>inside</code></td>
+                  <td><code>cover</code></td>
+                  <td>Crop and resize fitting behavior when both <code>w</code> and <code>h</code> are provided.</td>
+                </tr>
+                <tr>
+                  <td><code>rotate</code></td>
+                  <td>Integer</td>
+                  <td><code>0</code>, <code>90</code>, <code>180</code>, <code>270</code></td>
+                  <td>Auto</td>
+                  <td>Explicit rotation degrees. Default respects EXIF orientation.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 7. Cache Headers & Speed -->
+        <section id="cache-headers" class="doc-section">
+          <span class="section-tag">07 / CACHING</span>
+          <h2>Edge Caching & Performance Headers</h2>
+          <p>
+            ByteBucket issues HTTP/2 & HTTP/3 headers designed for maximum edge cache efficiency:
+          </p>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>Response Headers</span>
+            </div>
+            <pre><code><span class="c-prop">cache-control:</span> public, max-age=31536000, immutable
+<span class="c-prop">content-type:</span> image/webp
+<span class="c-prop">x-cache:</span> HIT
+<span class="c-prop">access-control-allow-origin:</span> *</code></pre>
+          </div>
+
+          <p class="sub-text">
+            Because filenames are content-addressed and immutable, browsers and edge proxies will cache transformed images for up to 1 year without re-validating origin storage.
+          </p>
+        </section>
+
+        <!-- 8. HTTP Status Codes -->
+        <section id="status-codes" class="doc-section">
+          <span class="section-tag">08 / ERROR HANDLING</span>
+          <h2>HTTP Status Codes & Error Responses</h2>
+
+          <div class="table-scroll-wrap">
+            <table class="apple-table">
+              <thead>
+                <tr>
+                  <th>Status Code</th>
+                  <th>Meaning</th>
+                  <th>Condition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="status-pill s200">200 OK</span></td>
+                  <td>Success</td>
+                  <td>Asset retrieved successfully from CDN or origin.</td>
+                </tr>
+                <tr>
+                  <td><span class="status-pill s201">201 Created</span></td>
+                  <td>File Uploaded</td>
+                  <td>Images successfully processed and metadata recorded.</td>
+                </tr>
+                <tr>
+                  <td><span class="status-pill s400">400 Bad Request</span></td>
+                  <td>Missing Payload</td>
+                  <td>No image files found in the <code>images</code> field.</td>
+                </tr>
+                <tr>
+                  <td><span class="status-pill s401">401 Unauthorized</span></td>
+                  <td>Invalid Key</td>
+                  <td>Missing or invalid <code>X-API-Key</code> request header.</td>
+                </tr>
+                <tr>
+                  <td><span class="status-pill s404">404 Not Found</span></td>
+                  <td>Not Found</td>
+                  <td>The requested filename does not exist in storage.</td>
+                </tr>
+                <tr>
+                  <td><span class="status-pill s413">413 Payload Too Large</span></td>
+                  <td>File Limit Exceeded</td>
+                  <td>File exceeds the maximum size limit of 25 MB.</td>
+                </tr>
+                <tr>
+                  <td><span class="status-pill s500">500 Server Error</span></td>
+                  <td>Internal Error</td>
+                  <td>Processing or Sharp compression failure.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 9. Code Integration Examples -->
+        <section id="code-js" class="doc-section">
+          <span class="section-tag">09 / CODE EXAMPLES</span>
+          <h2>JavaScript / Node.js & TypeScript</h2>
+          <p>
+            Upload images from a Node.js server, backend service, or Next.js route handler:
+          </p>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>Node.js v18+ Native Fetch</span>
+              <button class="btn-copy-code" data-copy='import fs from "node:fs";
+
+async function uploadImage(filePath) {
+  const fileBlob = new Blob([fs.readFileSync(filePath)]);
+  const formData = new FormData();
+  formData.append("images", fileBlob, "asset.png");
+
+  const res = await fetch("https://bytebucket.hayproject.my.id/api/v1/upload", {
+    method: "POST",
+    headers: {
+      "X-API-Key": process.env.BYTEBUCKET_API_KEY
+    },
+    body: formData
+  });
+
+  const body = await res.json();
+  return body.data.cdn_url;
+}'>
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code><span class="c-keyword">import</span> fs <span class="c-keyword">from</span> <span class="c-string">"node:fs"</span>;
+
+<span class="c-keyword">async function</span> <span class="c-func">uploadImage</span>(filePath) &#123;
+  <span class="c-keyword">const</span> fileBlob = <span class="c-keyword">new</span> Blob([fs.<span class="c-func">readFileSync</span>(filePath)]);
+  <span class="c-keyword">const</span> formData = <span class="c-keyword">new</span> FormData();
+  formData.<span class="c-func">append</span>(<span class="c-string">"images"</span>, fileBlob, <span class="c-string">"asset.png"</span>);
+
+  <span class="c-keyword">const</span> res = <span class="c-keyword">await</span> <span class="c-func">fetch</span>(<span class="c-string">"https://bytebucket.hayproject.my.id/api/v1/upload"</span>, &#123;
+    method: <span class="c-string">"POST"</span>,
+    headers: &#123;
+      <span class="c-prop">"X-API-Key"</span>: process.env.BYTEBUCKET_API_KEY
+    &#125;,
+    body: formData
+  &#125;);
+
+  <span class="c-keyword">const</span> body = <span class="c-keyword">await</span> res.<span class="c-func">json</span>();
+  <span class="c-keyword">return</span> body.data.cdn_url;
+&#125;</code></pre>
+          </div>
+        </section>
+
+        <!-- Browser Frontend Upload -->
+        <section id="code-browser" class="doc-section">
+          <h2>Browser / Frontend Upload</h2>
+          <p>Upload directly from an HTML <code>&lt;input type="file"&gt;</code> element:</p>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>Vanilla JavaScript</span>
+              <button class="btn-copy-code" data-copy='const input = document.querySelector("#my-file-input");
+
+input.addEventListener("change", async () => {
+  const file = input.files[0];
+  const form = new FormData();
+  form.append("images", file);
+
+  const res = await fetch("https://bytebucket.hayproject.my.id/api/v1/upload", {
+    method: "POST",
+    headers: { "X-API-Key": "sk_live_your_key" },
+    body: form
+  });
+
+  const { data } = await res.json();
+  console.log("Uploaded URL:", data.cdn_url);
+});'>
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code><span class="c-keyword">const</span> input = document.<span class="c-func">querySelector</span>(<span class="c-string">"#my-file-input"</span>);
+
+input.<span class="c-func">addEventListener</span>(<span class="c-string">"change"</span>, <span class="c-keyword">async</span> () => &#123;
+  <span class="c-keyword">const</span> file = input.files[0];
+  <span class="c-keyword">const</span> form = <span class="c-keyword">new</span> FormData();
+  form.<span class="c-func">append</span>(<span class="c-string">"images"</span>, file);
+
+  <span class="c-keyword">const</span> res = <span class="c-keyword">await</span> <span class="c-func">fetch</span>(<span class="c-string">"https://bytebucket.hayproject.my.id/api/v1/upload"</span>, &#123;
+    method: <span class="c-string">"POST"</span>,
+    headers: &#123; <span class="c-prop">"X-API-Key"</span>: <span class="c-string">"sk_live_your_key"</span> &#125;,
+    body: form
+  &#125;);
+
+  <span class="c-keyword">const</span> &#123; data &#125; = <span class="c-keyword">await</span> res.<span class="c-func">json</span>();
+  console.<span class="c-func">log</span>(<span class="c-string">"Uploaded URL:"</span>, data.cdn_url);
+&#125;);</code></pre>
+          </div>
+        </section>
+
+        <!-- Python Example -->
+        <section id="code-python" class="doc-section">
+          <h2>Python (Requests)</h2>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>Python 3 Script</span>
+              <button class="btn-copy-code" data-copy='import os
+import requests
+
+API_KEY = os.getenv("BYTEBUCKET_API_KEY")
+URL = "https://bytebucket.hayproject.my.id/api/v1/upload"
+
+with open("banner.png", "rb") as image_file:
+    response = requests.post(
+        URL,
+        headers={"X-API-Key": API_KEY},
+        files={"images": image_file}
+    )
+
+data = response.json()
+print("Delivered at:", data["data"]["cdn_url"])'>
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code><span class="c-keyword">import</span> os
+<span class="c-keyword">import</span> requests
+
+API_KEY = os.getenv(<span class="c-string">"BYTEBUCKET_API_KEY"</span>)
+URL = <span class="c-string">"https://bytebucket.hayproject.my.id/api/v1/upload"</span>
+
+<span class="c-keyword">with</span> <span class="c-func">open</span>(<span class="c-string">"banner.png"</span>, <span class="c-string">"rb"</span>) <span class="c-keyword">as</span> image_file:
+    response = requests.<span class="c-func">post</span>(
+        URL,
+        headers=&#123;<span class="c-string">"X-API-Key"</span>: API_KEY&#125;,
+        files=&#123;<span class="c-string">"images"</span>: image_file&#125;
+    )
+
+data = response.<span class="c-func">json</span>()
+<span class="c-func">print</span>(<span class="c-string">"Delivered at:"</span>, data[<span class="c-string">"data"</span>][<span class="c-string">"cdn_url"</span>])</code></pre>
+          </div>
+        </section>
+
+        <!-- PHP / Laravel Example -->
+        <section id="code-php" class="doc-section">
+          <h2>PHP / Laravel</h2>
+
+          <div class="code-card">
+            <div class="code-card-header">
+              <span>Laravel Controller / Service</span>
+              <button class="btn-copy-code" data-copy='use Illuminate\Support\Facades\Http;
+
+$response = Http::withHeaders([
+    "X-API-Key" => config("services.bytebucket.key")
+])->attach(
+    "images", file_get_contents($uploadedFile->getRealPath()), $uploadedFile->getClientOriginalName()
+)->post("https://bytebucket.hayproject.my.id/api/v1/upload");
+
+$cdnUrl = $response->json("data.cdn_url");'>
+                <Copy size={13} class="copy-icon" />
+                <Check size={13} class="check-icon hidden" />
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code><span class="c-keyword">use</span> Illuminate\Support\Facades\Http;
+
+$response = Http::<span class="c-func">withHeaders</span>([
+    <span class="c-string">"X-API-Key"</span> => config(<span class="c-string">"services.bytebucket.key"</span>)
+])-><span class="c-func">attach</span>(
+    <span class="c-string">"images"</span>, file_get_contents($file-><span class="c-func">getRealPath</span>()), $file-><span class="c-func">getClientOriginalName</span>()
+)-><span class="c-func">post</span>(<span class="c-string">"https://bytebucket.hayproject.my.id/api/v1/upload"</span>);
+
+$cdnUrl = $response-><span class="c-func">json</span>(<span class="c-string">"data.cdn_url"</span>);</code></pre>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .docs-page {
+    padding-top: 50px;
+    padding-bottom: 100px;
+  }
+
+  .docs-hero {
+    margin-bottom: 40px;
+    max-width: 820px;
+  }
+
+  .docs-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--apple-blue);
+    margin-bottom: 10px;
+  }
+
+  .docs-hero h1 {
+    font-size: clamp(34px, 5vw, 54px);
+    letter-spacing: -0.05em;
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+
+  .docs-subtitle {
+    font-size: 16.5px;
+    color: #86868b;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .docs-subtitle code {
+    color: #60a5fa;
+    background: rgba(41, 151, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+  }
+
+  /* Mobile Jump Chips */
+  .mobile-jump-chips {
+    display: none;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    margin-top: 14px;
+  }
+
+  .jump-chip {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 12px;
+    color: #d1d1d6;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+
+  .jump-chip:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+
+  /* Docs Layout */
+  .docs-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 60px;
+    align-items: flex-start;
+  }
+
+  /* Sticky Sidebar */
+  .docs-sidebar {
+    position: sticky;
+    top: 90px;
+    padding-right: 10px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .group-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #707078;
+    margin-bottom: 6px;
+  }
+
+  .doc-link {
+    font-size: 13px;
+    color: #86868b;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+  }
+
+  .doc-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .doc-link.active {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .link-highlight {
+    color: var(--apple-blue);
+    font-weight: 550;
+  }
+
+  /* Content Area */
+  .docs-content {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    max-width: 820px;
+  }
+
+  .doc-section {
+    scroll-margin-top: 100px;
+  }
+
+  .section-tag {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--apple-blue);
+    margin-bottom: 6px;
+  }
+
+  .doc-section h2 {
+    font-size: 26px;
+    letter-spacing: -0.04em;
+    margin-bottom: 14px;
+  }
+
+  .doc-section p {
+    font-size: 15px;
+    color: #a1a1a6;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .sub-text {
+    font-size: 13.5px !important;
+    margin-top: 16px;
+    margin-bottom: 8px !important;
+  }
+
+  .doc-section code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: #93c5fd;
+    background: rgba(41, 151, 255, 0.08);
+    border: 1px solid rgba(41, 151, 255, 0.18);
+    padding: 2px 6px;
+    border-radius: 5px;
+  }
+
+  .callout-glass {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: rgba(41, 151, 255, 0.07);
+    border: 1px solid rgba(41, 151, 255, 0.22);
+    font-size: 13.5px;
+    color: #e5e5ea;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .callout-icon {
+    color: var(--apple-blue);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .specs-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    background: rgba(14, 14, 18, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .spec-item {
+    font-size: 13px;
+    color: #a1a1a6;
+  }
+
+  .spec-item strong {
+    color: #ffffff;
+  }
+
+  .security-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: rgba(255, 69, 58, 0.08);
+    border: 1px solid rgba(255, 69, 58, 0.25);
+    font-size: 13.5px;
+    color: #e5e5ea;
+    line-height: 1.6;
+    margin-top: 16px;
+  }
+
+  .text-red {
+    color: #ff6961;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Code Cards */
+  .code-card {
+    border-radius: 16px;
+    background: #09090c;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .code-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 11px;
+    font-weight: 600;
+    color: #86868b;
+  }
+
+  .btn-copy-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .btn-copy-code:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .code-card pre {
+    padding: 16px 20px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #c9d1d9;
+    margin: 0;
+    overflow-x: auto;
+  }
+
+  .c-keyword { color: #f472b6; }
+  .c-string { color: #93c5fd; }
+  .c-func { color: #60a5fa; }
+  .c-prop { color: #a78bfa; }
+
+  /* Tables */
+  .apple-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+    min-width: 620px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(14, 14, 18, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .apple-table th {
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: #86868b;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .apple-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #d1d1d6;
+  }
+
+  .apple-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .method {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .method.post { background: rgba(41, 151, 255, 0.15); color: #60a5fa; }
+  .method.get { background: rgba(48, 209, 88, 0.15); color: #30d158; }
+  .method.delete { background: rgba(255, 69, 58, 0.15); color: #ff6961; }
+
+  /* Status Pills */
+  .status-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .status-pill.s200, .status-pill.s201 { background: rgba(48, 209, 88, 0.14); color: #30d158; }
+  .status-pill.s400, .status-pill.s404 { background: rgba(255, 159, 10, 0.14); color: #ff9f0a; }
+  .status-pill.s401, .status-pill.s413, .status-pill.s500 { background: rgba(255, 69, 58, 0.14); color: #ff6961; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 900px) {
+    .docs-layout {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .docs-sidebar {
+      display: none;
+    }
+    .mobile-jump-chips {
+      display: flex;
+    }
+    .docs-page {
+      padding-top: 30px;
+    }
+  }
+
+  @media (max-width: 550px) {
+    .doc-section h2 {
+      font-size: 22px;
+    }
+    .code-card pre {
+      padding: 12px 14px;
+      font-size: 11.5px;
+    }
+    .callout-glass {
+      padding: 14px;
+    }
+  }
+</style>
+
+<script>
+  // Copy code buttons in documentation
+  document.querySelectorAll(".btn-copy-code").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = (btn as HTMLElement).dataset.copy || "";
+      try {
+        await navigator.clipboard.writeText(text);
+        const copyIcon = btn.querySelector(".copy-icon");
+        const checkIcon = btn.querySelector(".check-icon");
+        const label = btn.querySelector("span");
+
+        copyIcon?.classList.add("hidden");
+        checkIcon?.classList.remove("hidden");
+        if (label) label.textContent = "Copied!";
+
+        if (window.showToast) {
+          window.showToast("Copied to clipboard");
+        }
+
+        setTimeout(() => {
+          copyIcon?.classList.remove("hidden");
+          checkIcon?.classList.add("hidden");
+          if (label) label.textContent = "Copy";
+        }, 1800);
+      } catch {
+        prompt("Copy text:", text);
+      }
+    });
+  });
+</script>
